@@ -1,6 +1,6 @@
 # REST Assured Java API Automation Framework
 
-A comprehensive, modular API automation framework built with Gradle, TestNG, RestAssured, and Allure Reports for testing the FakeStore API.
+A comprehensive, modular API automation framework built with Gradle, TestNG, RestAssured, and Allure Reports for testing the [FakeStore](https://fakestoreapi.com/) API.
 
 ## 🚀 Features
 
