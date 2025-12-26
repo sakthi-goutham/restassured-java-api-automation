@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'com.api.automation'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+    // RestAssured for API testing
+    implementation 'io.rest-assured:rest-assured:5.3.2'
+    implementation 'io.rest-assured:json-path:5.3.2'
+    implementation 'io.rest-assured:xml-path:5.3.2'
+
+    // TestNG for test framework
+    implementation 'org.testng:testng:7.8.0'
+
+    // Jackson for JSON serialization/deserialization
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.3'
+
+    // Allure for reporting
+    implementation 'io.qameta.allure:allure-testng:2.24.0'
+    implementation 'io.qameta.allure:allure-rest-assured:2.24.0'
+
+    // Lombok for reducing boilerplate code
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // SLF4J for logging
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+
+    // AssertJ for fluent assertions
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+}
+
+allure {
+    version = '2.24.0'
+    autoconfigure = true
+    aspectjweaver = true
+}
+
+test {
+    useTestNG() {
+        suites 'src/test/resources/testng.xml'
+    }
+    
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+        showStandardStreams = false
+    }
+    
+    // Enable Allure
+    systemProperty 'allure.results.directory', 'build/allure-results'
+}
+
+// Clean allure results before test
+tasks.register('cleanAllureResults', Delete) {
+    delete 'build/allure-results'
+}
+
+test.dependsOn cleanAllureResults
+
